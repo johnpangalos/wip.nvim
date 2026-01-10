@@ -86,7 +86,8 @@ const Language = type({
   "formatters?": type.enumerated(...formatters),
 });
 
-await writeFile(
-  "schema.json",
-  JSON.stringify(Language.toJsonSchema(), null, 2),
-);
+const Schema = type({
+  "languages?": Language.array(),
+});
+
+await writeFile("schema.json", JSON.stringify(Schema.toJsonSchema(), null, 2));
