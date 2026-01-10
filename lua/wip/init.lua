@@ -11,7 +11,7 @@ local M = {}
 --- @field languages Language[]
 
 local FILE_BASE = vim.env.HOME .. "/.config/nvim"
-local SETTINGS_FILE_PATH = FILE_BASE .. "/languages.json"
+local SETTINGS_FILE_PATH = FILE_BASE .. "/wip.config.json"
 local NVIM_LSP_CONFIG_RAW_URL = "https://raw.githubusercontent.com/neovim/nvim-lspconfig/refs/heads/master/lsp/"
 
 --- Handles the response from downloading the lsp config. Saves the content to

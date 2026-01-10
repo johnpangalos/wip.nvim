@@ -19,59 +19,12 @@ treesitters, language servers and formatters.
 
 ## Example config
 
-Right now the config file has to be called `languages.json` and be placed in 
+Right now the config file has to be called `wip.config.json` and be placed in 
 your nvim config folder (e.g. `$HOME/.config/nvim`) but that is subject to 
 swift change in the future.
 
-```json
-{
-  "languages": [
-    {
-      "name": "typescript",
-      "lsp": ["tsgo", "eslint", "tailwindcss"],
-      "file_types": [
-        "typescript",
-        "typescriptreact",
-        "javascript",
-        "javascriptreact"
-      ],
-      "treesitters": ["typescript", "tsx", "javascript", "jsx"],
-      "formatters": ["prettier"]
-    },
-    {
-      "name": "go",
-      "lsp": ["gopls"],
-      "file_types": ["go"],
-      "treesitters": ["go"],
-      "formatters": ["gofmt"]
-    },
-    {
-      "name": "json",
-      "lsp": ["jsonls"],
-      "file_types": ["json"],
-      "treesitters": ["json"],
-      "formatters": ["prettier"]
-    },
-    {
-      "name": "lua",
-      "lsp": ["lua_ls"],
-      "file_types": ["lua"],
-      "treesitters": ["lua"],
-      "formatters": ["stylua"]
-    },
-    {
-      "name": "gitcommit",
-      "file_types": ["gitcommit"],
-      "treesitters": ["gitcommit"]
-    },
-    {
-      "name": "markdown",
-      "file_types": ["markdown"],
-      "treesitters": ["markdown"]
-    }
-  ]
-}
-```
+Take a look at the [example](examples/wip.config.json) in the examples folder.
+
 
 ## What something else?
 
