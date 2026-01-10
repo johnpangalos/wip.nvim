@@ -78,12 +78,19 @@ const lsps = lspsRaw.entries
   .filter((ft) => ft.name.includes(".lua"))
   .map((ft) => ft.name.replace(".lua", ""));
 
+const FileType = type.or(...fts.map((ft) => type.unit(ft)));
+const Lsp = type.or(...lsps.map((lsp) => type.unit(lsp)));
+const Treesitter = type.or(...tss.map((ts) => type.unit(ts)));
+const Formatter = type.or(
+  ...formatters.map((formatter) => type.unit(formatter)),
+);
+
 const Language = type({
   name: "string",
-  file_types: type.enumerated(...fts),
-  "lsp?": type.enumerated(...lsps),
-  "treesitters?": type.enumerated(...tss),
-  "formatters?": type.enumerated(...formatters),
+  file_types: FileType.array(),
+  "lsp?": Lsp.array(),
+  "treesitters?": Treesitter.array(),
+  "formatters?": Formatter.array(),
 });
 
 const Schema = type({
