@@ -9,9 +9,9 @@ treesitters, language servers and formatters.
 
 ## Features
 
-- A json config file that you can use to simply configure the langauges you use
+- A json config file that you can use to simply configure the languages you use
   in neovim.
-- Setup of treesitters per language specified
+- Setup of treesitter parsers per language specified
 - Setup of lsps based on the configs in the 
   [nvim-lspconfig repo](https://github.com/neovim/nvim-lspconfig/)
 - Setup of formatters supported by 
@@ -26,6 +26,6 @@ swift change in the future.
 Take a look at the [example](examples/wip.config.json) in the examples folder.
 
 
-## What something else?
+## Want something else?
 
 Add something in the discussion, there are no issues in the project.

@@ -22,7 +22,7 @@ local function download_lsp_config(lsp, callback)
   local url = NVIM_LSP_CONFIG_RAW_URL .. lsp .. ".lua"
   vim.net.request(url, nil, function(err, res)
     if err then
-      vim.print("Could not download" .. lsp)
+      vim.print("Could not download " .. lsp)
       vim.print(err)
       return
     end
@@ -104,13 +104,9 @@ M.setup = function()
     ts_map[p] = true
   end
 
-  for _, p in ipairs(ts.get_installed("parsers")) do
-    ts_map[p] = true
-  end
-
   for _, t in pairs(ts_list) do
-    if ts_map[ts] == nil then
-      -- turn treesitter install into a syncronous call with a max timeout of
+    if ts_map[t] == nil then
+      -- turn treesitter install into a synchronous call with a max timeout of
       -- 5 minutes.
       ts.install(t):wait(300000)
       ts_map[t] = true
