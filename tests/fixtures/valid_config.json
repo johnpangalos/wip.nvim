@@ -1,0 +1,23 @@
+{
+  "languages": [
+    {
+      "name": "typescript",
+      "lsp": ["tsgo", "eslint"],
+      "file_types": ["typescript", "typescriptreact"],
+      "treesitters": ["typescript", "tsx"],
+      "formatters": ["prettier"]
+    },
+    {
+      "name": "go",
+      "lsp": ["gopls"],
+      "file_types": ["go"],
+      "treesitters": ["go"],
+      "formatters": ["gofmt"]
+    },
+    {
+      "name": "markdown",
+      "file_types": ["markdown"],
+      "treesitters": ["markdown"]
+    }
+  ]
+}

@@ -1,0 +1,8 @@
+{
+  "languages": [
+    {
+      "name": "gitcommit",
+      "file_types": ["gitcommit"]
+    }
+  ]
+}
