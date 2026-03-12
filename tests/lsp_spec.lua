@@ -36,10 +36,6 @@ describe("wip.lsp", function()
     end
 
     -- Stub vim.net.request to avoid real downloads
-    -- vim.net may not exist in stable Neovim builds
-    if not vim.net then
-      vim.net = {}
-    end
     local original_request = vim.net.request
     vim.net.request = function(_, _, _) end
 
