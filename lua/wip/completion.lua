@@ -1,8 +1,9 @@
 local M = {}
 
---- Sets up LSP-based auto-completion with autotrigger.
+--- Sets up LSP-based auto-completion using Neovim 0.12's autocomplete option.
 M.setup = function()
   vim.o.completeopt = "menuone,noselect"
+  vim.o.autocomplete = true
 
   vim.api.nvim_create_autocmd("LspAttach", {
     callback = function(ev)
@@ -11,7 +12,7 @@ M.setup = function()
         return
       end
       if client:supports_method("textDocument/completion") then
-        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+        vim.lsp.completion.enable(true, client.id, ev.buf, {})
       end
     end,
   })
