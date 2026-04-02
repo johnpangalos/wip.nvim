@@ -9,6 +9,14 @@ describe("wip.completion", function()
     assert_eq(vim.o.completeopt, "menuone,noselect")
   end)
 
+  it("enables autocomplete", function()
+    vim.o.autocomplete = false
+
+    completion.setup()
+
+    assert_eq(vim.o.autocomplete, true)
+  end)
+
   it("creates an LspAttach autocmd", function()
     local autocmds_before = #vim.api.nvim_get_autocmds({ event = "LspAttach" })
 

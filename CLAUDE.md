@@ -24,11 +24,14 @@ The core is `lua/wip/init.lua` (~150 LOC) which exposes `setup()`:
 cd scripts && pnpm install && pnpm tsx generate-schema.ts
 ```
 
-### No test or lint setup exists currently
+### Tests
+```bash
+nvim --headless -l tests/run.lua
+```
 
 ## Conventions
 
 - Use pnpm, not npm (for the scripts/ directory)
-- Semantic/conventional commits (`fix:`, `feat:`, `chore:`, `docs:`)
+- Semantic/conventional commits (`fix:`, `feat:`, `chore:`, `docs:`, `test:`, `refactor:`) with a title and description
 - Lua targets LuaJIT 5.1 (see `.luarc.json`)
 - 2-space indentation (see `.editorconfig`)
