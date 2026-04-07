@@ -21,18 +21,12 @@ jobs:
           neovim: true
           version: nightly
 
-      - name: Clone mini.doc
-        run: git clone --depth 1 https://github.com/echasnovski/mini.doc deps/mini.doc
-
-      - name: Install just
-        uses: extractions/setup-just@v2
-
       - name: Generate docs
-        run: just docs
+        run: make docs
 
       - name: Check for doc drift
         run: |
           git diff --exit-code doc/wip.txt || {
-            echo "::error::doc/wip.txt is out of date. Run 'just docs' and commit."
+            echo "::error::doc/wip.txt is out of date. Run 'make docs' and commit."
             exit 1
           }
