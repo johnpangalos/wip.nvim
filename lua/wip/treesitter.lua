@@ -1,9 +1,14 @@
+--- *wip.treesitter* Treesitter setup
+---
+--- Installs missing treesitter parsers and creates FileType autocmds
+--- for syntax highlighting and indentation.
+
 local M = {}
 
 --- Installs missing treesitter parsers and creates FileType autocmds for syntax
 --- highlighting and indentation.
---- @param ts_list string[]: list of treesitter parser names to install
---- @param ft_list string[]: list of file types to create autocmds for
+--- @param ts_list string[] List of treesitter parser names to install
+--- @param ft_list string[] List of file types to create autocmds for
 M.setup = function(ts_list, ft_list)
   local ts = require("nvim-treesitter")
 

@@ -1,3 +1,21 @@
+--- *wip.txt*    wip.nvim
+---
+--- Simplifies language-specific development environment setup through a
+--- single JSON config file (~/.config/nvim/wip.config.json). Wraps
+--- nvim-treesitter, nvim-lspconfig, and conform.nvim.
+---
+--- # Setup ~
+---
+--- Add to your Neovim config:
+--- >lua
+---   require("wip").setup()
+--- <
+---
+--- # Configuration ~
+---
+--- Create `~/.config/nvim/wip.config.json`. See |wip.config| for the
+--- schema and the `examples/` directory for a complete example.
+
 local M = {}
 
 --- @class Language

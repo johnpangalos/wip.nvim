@@ -1,3 +1,8 @@
+--- *wip.completion* Completion setup
+---
+--- Configures LSP-based auto-completion using Neovim 0.12+'s built-in
+--- `autocomplete` option.
+
 local M = {}
 
 --- Sets up LSP-based auto-completion using Neovim 0.12's autocomplete option.

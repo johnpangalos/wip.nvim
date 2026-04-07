@@ -1,3 +1,8 @@
+--- *wip.config* Configuration parsing
+---
+--- Reads and aggregates `wip.config.json` into flat lists consumed by
+--- the LSP, treesitter, formatter, and completion modules.
+
 local M = {}
 
 --- @class ParsedConfig
@@ -7,7 +12,7 @@ local M = {}
 --- @field ts_list string[]
 
 --- Parses a wip.config.json file and aggregates language settings into flat lists.
---- @param file_path string: path to the wip.config.json file
+--- @param file_path string Path to the wip.config.json file
 --- @return ParsedConfig
 M.parse = function(file_path)
   local settings_file = assert(io.open(file_path))
