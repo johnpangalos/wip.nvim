@@ -7,12 +7,13 @@ local M = {}
 
 --- Installs missing treesitter parsers and creates FileType autocmds for syntax
 --- highlighting and indentation.
---- @param ts_list string[] List of treesitter parser names to install
---- @param ft_list string[] List of file types to create autocmds for
+---@private
+---@param ts_list string[] List of treesitter parser names to install
+---@param ft_list string[] List of file types to create autocmds for
 M.setup = function(ts_list, ft_list)
   local ts = require("nvim-treesitter")
 
-  --- @type table<string, boolean>
+  ---@type table<string, boolean>
   local ts_map = {}
   for _, p in ipairs(ts.get_installed("parsers")) do
     ts_map[p] = true

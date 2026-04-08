@@ -1,0 +1,84 @@
+*wip.txt*    wip.nvim
+
+Simplifies language-specific development environment setup through a
+single JSON config file (~/.config/nvim/wip.config.json). Wraps
+nvim-treesitter, nvim-lspconfig, and conform.nvim.
+
+# Setup ~
+
+Add to your Neovim config:
+>lua
+  require("wip").setup()
+<
+
+# Configuration ~
+
+Create `~/.config/nvim/wip.config.json`. See |wip.config| for the
+schema and the `examples/` directory for a complete example.
+
+------------------------------------------------------------------------------
+Class ~
+{Language}
+Fields ~
+{name} `(string)`
+{lsp} `(string[])`
+{file_types} `(string[])`
+{formatters} `(string[])`
+{treesitters} `(string[])`
+
+------------------------------------------------------------------------------
+Class ~
+{Settings}
+Fields ~
+{languages} `(Language[])`
+
+
+==============================================================================
+------------------------------------------------------------------------------
+*wip.config* Configuration parsing
+
+Reads and aggregates `wip.config.json` into flat lists consumed by
+the LSP, treesitter, formatter, and completion modules.
+
+------------------------------------------------------------------------------
+Class ~
+{ParsedConfig}
+Fields ~
+{lsp_list} `(string[])`
+{ft_list} `(string[])`
+{formatters_map} `(table<string, string[]>)`
+{ts_list} `(string[])`
+
+
+==============================================================================
+------------------------------------------------------------------------------
+*wip.lsp* LSP setup
+
+Downloads missing LSP configurations from the nvim-lspconfig
+repository and enables LSP servers via `vim.lsp.enable()`.
+
+
+==============================================================================
+------------------------------------------------------------------------------
+*wip.treesitter* Treesitter setup
+
+Installs missing treesitter parsers and creates FileType autocmds
+for syntax highlighting and indentation.
+
+
+==============================================================================
+------------------------------------------------------------------------------
+*wip.formatter* Formatter setup
+
+Registers formatter mappings with conform.nvim for each file type.
+
+
+==============================================================================
+------------------------------------------------------------------------------
+*wip.completion* Completion setup
+
+Configures LSP-based auto-completion using Neovim 0.12+'s built-in
+`autocomplete` option.
+
+
+ vim:tw=78:ts=8:noet:ft=help:norl:

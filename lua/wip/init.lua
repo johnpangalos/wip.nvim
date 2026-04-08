@@ -18,15 +18,15 @@
 
 local M = {}
 
---- @class Language
---- @field name string
---- @field lsp string[]
---- @field file_types string[]
---- @field formatters string[]
---- @field treesitters string[]
+---@class Language
+---@field name string
+---@field lsp string[]
+---@field file_types string[]
+---@field formatters string[]
+---@field treesitters string[]
 
---- @class Settings
---- @field languages Language[]
+---@class Settings
+---@field languages Language[]
 
 local FILE_BASE = vim.env.HOME .. "/.config/nvim"
 local SETTINGS_FILE_PATH = FILE_BASE .. "/wip.config.json"
