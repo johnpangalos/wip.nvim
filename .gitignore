@@ -1,2 +1,4 @@
 .env
 node_modules
+deps
+nvim-linux-x86_64*

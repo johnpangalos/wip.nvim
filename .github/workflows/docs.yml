@@ -1,0 +1,32 @@
+name: Docs
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - "lua/**"
+  push:
+    branches: [main]
+    paths:
+      - "lua/**"
+
+jobs:
+  docs:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: rhysd/action-setup-vim@v1
+        with:
+          neovim: true
+          version: nightly
+
+      - name: Generate docs
+        run: make docs
+
+      - name: Check for doc drift
+        run: |
+          git diff --exit-code doc/wip.txt || {
+            echo "::error::doc/wip.txt is out of date. Run 'make docs' and commit."
+            exit 1
+          }

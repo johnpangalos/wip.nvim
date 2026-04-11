@@ -1,0 +1,6 @@
+wip.completion	wip.txt	/*wip.completion*
+wip.config	wip.txt	/*wip.config*
+wip.formatter	wip.txt	/*wip.formatter*
+wip.lsp	wip.txt	/*wip.lsp*
+wip.treesitter	wip.txt	/*wip.treesitter*
+wip.txt	wip.txt	/*wip.txt*
