@@ -6,7 +6,7 @@ describe("wip.completion", function()
 
     completion.setup()
 
-    assert_eq(vim.o.completeopt, "menuone,noselect")
+    assert_eq(vim.o.completeopt, "menuone,noselect,fuzzy,popup")
   end)
 
   it("enables autocomplete", function()
