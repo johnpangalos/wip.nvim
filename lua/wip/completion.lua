@@ -8,9 +8,6 @@
 --- - `noselect` never auto-select an item, so typing is never altered
 --- - `fuzzy`    match partial / out-of-order input
 --- - `popup`    show documentation and signatures next to the menu
----
---- Per LSP client, completion is enabled with `autotrigger` so the menu
---- also opens on server-defined trigger characters (e.g. `.`).
 
 local M = {}
 
@@ -27,7 +24,11 @@ M.setup = function()
         return
       end
       if client:supports_method("textDocument/completion") then
-        vim.lsp.completion.enable(true, client.id, ev.buf, { autotrigger = true })
+        -- `autotrigger` is intentionally omitted: firing LSP completion on a
+        -- trigger character (e.g. `.`) currently deletes that character on
+        -- accept (neovim/neovim#35470, #25177). `vim.o.autocomplete` already
+        -- opens the menu as you type, so we don't lose much.
+        vim.lsp.completion.enable(true, client.id, ev.buf, {})
       end
     end,
   })
