@@ -48,4 +48,48 @@ describe("wip.treesitter", function()
     -- Cleanup
     package.loaded["nvim-treesitter"] = nil
   end)
+
+  it("creates one FileType autocmd per file type even with duplicates", function()
+    package.loaded["nvim-treesitter"] = {
+      get_installed = function()
+        return {}
+      end,
+      install = function()
+        return { wait = function() end }
+      end,
+    }
+
+    local before = #vim.api.nvim_get_autocmds({ event = "FileType" })
+
+    treesitter.setup({}, { "ruby", "ruby", "eruby" })
+
+    local created = #vim.api.nvim_get_autocmds({ event = "FileType" }) - before
+
+    assert_eq(created, 2, "expected 2 new FileType autocmds, got " .. created)
+
+    package.loaded["nvim-treesitter"] = nil
+  end)
+
+  it("keeps installing parsers after one fails", function()
+    local installed = {}
+
+    package.loaded["nvim-treesitter"] = {
+      get_installed = function()
+        return {}
+      end,
+      install = function(parser)
+        if parser == "broken" then
+          error("install failed")
+        end
+        table.insert(installed, parser)
+        return { wait = function() end }
+      end,
+    }
+
+    treesitter.setup({ "go", "broken", "rust" }, {})
+
+    assert_eq(installed, { "go", "rust" })
+
+    package.loaded["nvim-treesitter"] = nil
+  end)
 end)

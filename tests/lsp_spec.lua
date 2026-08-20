@@ -52,4 +52,85 @@ describe("wip.lsp", function()
     vim.net.request = original_request
     vim.fn.delete(tmp, "rf")
   end)
+
+  it("enables every LSP server in the list", function()
+    local enabled = {}
+
+    local original_enable = vim.lsp.enable
+    vim.lsp.enable = function(name)
+      table.insert(enabled, name)
+    end
+
+    local tmp = vim.fn.tempname()
+    vim.fn.mkdir(tmp .. "/lsp", "p")
+    for _, name in ipairs({ "one", "two", "three" }) do
+      local f = assert(io.open(tmp .. "/lsp/" .. name .. ".lua", "w"))
+      f:write("return {}")
+      f:close()
+    end
+
+    lsp.setup({ "one", "two", "three" }, tmp)
+
+    assert_eq(enabled, { "one", "two", "three" })
+
+    vim.lsp.enable = original_enable
+    vim.fn.delete(tmp, "rf")
+  end)
+
+  it("keeps enabling the rest of the list when one server fails", function()
+    local enabled = {}
+
+    local original_enable = vim.lsp.enable
+    vim.lsp.enable = function(name)
+      if name == "broken" then
+        error("no config found for broken")
+      end
+      table.insert(enabled, name)
+    end
+
+    local tmp = vim.fn.tempname()
+    vim.fn.mkdir(tmp .. "/lsp", "p")
+    for _, name in ipairs({ "one", "broken", "three" }) do
+      local f = assert(io.open(tmp .. "/lsp/" .. name .. ".lua", "w"))
+      f:write("return {}")
+      f:close()
+    end
+
+    lsp.setup({ "one", "broken", "three" }, tmp)
+
+    assert_eq(enabled, { "one", "three" })
+
+    vim.lsp.enable = original_enable
+    vim.fn.delete(tmp, "rf")
+  end)
+
+  it("creates the lsp directory before downloading configs", function()
+    local original_request = vim.net.request
+    vim.net.request = function(_, _, _) end
+
+    local tmp = vim.fn.tempname()
+    vim.fn.mkdir(tmp, "p")
+
+    lsp.setup({ "missing_lsp" }, tmp)
+
+    assert_eq(vim.fn.isdirectory(tmp .. "/lsp"), 1, "expected " .. tmp .. "/lsp to be created")
+
+    vim.net.request = original_request
+    vim.fn.delete(tmp, "rf")
+  end)
+
+  it("does nothing when the lsp list is empty", function()
+    local enabled = {}
+
+    local original_enable = vim.lsp.enable
+    vim.lsp.enable = function(name)
+      table.insert(enabled, name)
+    end
+
+    lsp.setup({}, "/nonexistent/path")
+
+    assert_len(enabled, 0)
+
+    vim.lsp.enable = original_enable
+  end)
 end)
