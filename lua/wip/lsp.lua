@@ -2,6 +2,21 @@
 ---
 --- Downloads missing LSP configurations from the nvim-lspconfig
 --- repository and enables LSP servers via `vim.lsp.enable()`.
+---
+--- # Config precedence ~
+---
+--- `vim.lsp.config[name]` resolves by deep-merging every `lsp/<name>.lua`
+--- found on the 'runtimepath', in 'runtimepath' order, so the LAST file
+--- wins. The config directory is FIRST on the 'runtimepath', which means a
+--- plugin that ships its own `lsp/<name>.lua` -- nvim-lspconfig does, for
+--- every server -- silently overrides the copy wip.nvim downloaded, together
+--- with any edits made to it.
+---
+--- Calls to `vim.lsp.config()` are merged after the whole 'runtimepath'
+--- chain, so wip.nvim re-applies the files in the config directory through
+--- it. That makes `<config>/lsp/` authoritative, which is what downloading
+--- into it assumes. Your own `vim.lsp.config()` calls still win as long as
+--- they run after `require("wip").setup()`.
 
 local M = {}
 
@@ -14,6 +29,27 @@ local function warn(msg)
   vim.schedule(function()
     vim.notify("wip.nvim: " .. msg, vim.log.levels.ERROR)
   end)
+end
+
+--- Re-applies a config from the config directory so it outranks the copies
+--- that other plugins put on the 'runtimepath'. See |wip.lsp|.
+---@private
+---@param lsp string The name of the lsp to re-apply
+---@param base_path string The base config directory
+local function apply_local_config(lsp, base_path)
+  local path = base_path .. "/lsp/" .. lsp .. ".lua"
+
+  local ok, config = pcall(dofile, path)
+  if not ok then
+    warn("could not load " .. path .. ": " .. tostring(config))
+    return
+  end
+  if type(config) ~= "table" then
+    warn(path .. " did not return a table")
+    return
+  end
+
+  vim.lsp.config(lsp, config)
 end
 
 --- Enables a single LSP server.
@@ -70,11 +106,22 @@ M.setup = function(lsp_list, base_path)
   -- make sure the destination exists before any request is fired.
   vim.fn.mkdir(base_path .. "/lsp", "p")
 
+  -- Every file in the directory, not just the configured servers: the
+  -- precedence problem applies to all of them. See |wip.lsp|.
+  for entry, entry_type in vim.fs.dir(base_path .. "/lsp") do
+    local name = entry:match("^(.*)%.lua$")
+    if name and (entry_type == "file" or entry_type == "link") then
+      apply_local_config(name, base_path)
+    end
+  end
+
   for _, lsp in ipairs(lsp_list) do
     local lsp_def_file = io.open(base_path .. "/lsp/" .. lsp .. ".lua", "r")
     if lsp_def_file == nil then
       download_lsp_config(lsp, base_path, function()
         vim.schedule(function()
+          -- The file did not exist during the pass above, so apply it now.
+          apply_local_config(lsp, base_path)
           enable_lsp(lsp)
         end)
       end)
