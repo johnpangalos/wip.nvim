@@ -19,22 +19,36 @@ M.setup = function(ts_list, ft_list)
     ts_map[p] = true
   end
 
-  for _, t in pairs(ts_list) do
+  for _, t in ipairs(ts_list) do
     if ts_map[t] == nil then
-      -- synchronous install with a max timeout of 5 minutes
-      ts.install(t):wait(300000)
       ts_map[t] = true
+      -- A parser that fails to install must not stop the remaining ones,
+      -- so each install is isolated. Synchronous, max timeout of 5 minutes.
+      local ok, err = pcall(function()
+        ts.install(t):wait(300000)
+      end)
+      if not ok then
+        local msg = "wip.nvim: could not install parser " .. t .. ": " .. tostring(err)
+        vim.schedule(function()
+          vim.notify(msg, vim.log.levels.ERROR)
+        end)
+      end
     end
   end
 
-  for _, ft in pairs(ft_list) do
-    vim.api.nvim_create_autocmd("FileType", {
-      pattern = { ft },
-      callback = function()
-        vim.treesitter.start()
-        vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
-      end,
-    })
+  ---@type table<string, boolean>
+  local ft_seen = {}
+  for _, ft in ipairs(ft_list) do
+    if ft_seen[ft] == nil then
+      ft_seen[ft] = true
+      vim.api.nvim_create_autocmd("FileType", {
+        pattern = { ft },
+        callback = function()
+          vim.treesitter.start()
+          vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+        end,
+      })
+    end
   end
 end
 

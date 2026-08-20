@@ -1,0 +1,23 @@
+{
+  "languages": [
+    {
+      "name": "typescript",
+      "lsp": ["tsgo", "eslint"],
+      "file_types": ["typescript", "typescriptreact"],
+      "treesitters": ["typescript", "tsx"],
+      "formatters": ["prettier"]
+    },
+    {
+      "name": "tailwind",
+      "lsp": ["tailwindcss", "eslint"],
+      "file_types": ["typescriptreact", "css"],
+      "treesitters": ["tsx", "css"],
+      "formatters": ["rustywind"]
+    },
+    {
+      "name": "typescript-extras",
+      "file_types": ["typescript"],
+      "treesitters": ["typescript"]
+    }
+  ]
+}

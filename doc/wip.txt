@@ -57,6 +57,21 @@ Fields ~
 Downloads missing LSP configurations from the nvim-lspconfig
 repository and enables LSP servers via `vim.lsp.enable()`.
 
+# Config precedence ~
+
+`vim.lsp.config[name]` resolves by deep-merging every `lsp/<name>.lua`
+found on the 'runtimepath', in 'runtimepath' order, so the LAST file
+wins. The config directory is FIRST on the 'runtimepath', which means a
+plugin that ships its own `lsp/<name>.lua` -- nvim-lspconfig does, for
+every server -- silently overrides the copy wip.nvim downloaded, together
+with any edits made to it.
+
+Calls to `vim.lsp.config()` are merged after the whole 'runtimepath'
+chain, so wip.nvim re-applies the files in the config directory through
+it. That makes `<config>/lsp/` authoritative, which is what downloading
+into it assumes. Your own `vim.lsp.config()` calls still win as long as
+they run after `require("wip").setup()`.
+
 
 ==============================================================================
 ------------------------------------------------------------------------------
